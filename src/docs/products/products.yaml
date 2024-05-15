@@ -1,0 +1,184 @@
+openapi: "3.0.3"
+info: 
+  title: API Products
+  version: "1.0"
+servers:
+  - url: "http://localhost:8080/"
+paths:
+  /api/products/:
+    get:
+      summary: Obtienes todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Todos los productos han sido obtenidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Products"
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+        - Products
+      summary: Crear un nuevo Producto.Se requiere rol de Admin o Premium
+      requestBody:
+        description: Crear un nuevo Producto
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+        required: true
+      responses:
+        "201":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la solicitud
+                  message:
+                    type: string
+                    description: Mensaje indicando el éxito de la operación
+        "400":
+          description: Error al crear un producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Descripción del error
+        "500":
+          description: Internal Server Error
+  /api/products/mockingproducts:
+    get:
+      summary: Obtienes todos los productos Fake
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Todos los productos fake han sido obtenidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Products"
+        "500":
+          description: Internal Server Error
+  /api/products/{pid}:
+    get:
+      summary: Obtienes un solo producto a partir de su Id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea buscar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Products"
+    put:
+      tags:
+        - Products
+      summary: Modificar un producto ya creado. Requiere perfil de Admin
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se modificar
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+        required: true
+      responses:
+        "200":
+          description: Producto Actualizado correctamente
+        "404":
+          description: Todos los campos son obligatorios. Producto no agregado
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - Products
+      summary: Eliminar un producto cambiando el status en false. No se elimina de la base. Requiere perfil admin o premium
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se eliminar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Producto Actualizado correctamente
+        "404":
+          description: Todos los campos son obligatorios. Producto no agregado
+        "500":
+          description: Internal Server Error
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id de Mongo
+        title:
+          type: string
+          description: Nombre de producto
+        description:
+          type: string
+          description: descripcion del producto
+        price:
+          type: number
+          description: precio de producto
+        thumbnail:
+          type: string
+          description: nombre de la foto del producto
+        code:
+          type: string
+          uniqueItems: true
+          description: codigo unico del producto
+        stock:
+          type: number
+          description: stock de producto
+        status:
+          type: boolean
+          description: campo utilizado para borrar producto
+        category:
+          type: string
+          description: categoria de producto
+        owner:
+          type: string
+          description: Creador del producto (email)
+      example:
+        title: Descorchador Rojo
+        description: Descorchador 2 tiempos color rojo
+        price: 1000
+        thumbnail: descorchador.jpg
+        code: AC100
+        stock: 10
+        status: true
+        category: descorchador
+        owner: pepe@vinomania.com
+          

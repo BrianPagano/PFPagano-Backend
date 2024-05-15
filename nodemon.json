@@ -1,0 +1,10 @@
+{
+  "ext": "js,yaml",
+  "execMap": {
+    "yaml": "node"
+  },
+  "watch": [
+    "*.js",
+    "*.yaml"
+  ]
+}
