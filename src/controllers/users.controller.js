@@ -11,7 +11,7 @@ const Users = require('../DAO/models/user.model')
 const SensibleDTO = require ('../DTO/sensible-user')
 const authorization = require('../middlewares/authorization-middleware')
 
-router.get('/', async (req,res,next) => {
+router.get('/', authorization(['admin']), async (req,res,next) => {
     try {
         const users = await UserService.getUsers()
         const userDTO = new SensibleDTO(users)
