@@ -1,28 +1,35 @@
+<body class="scroll">
+    {{!-- Single File --}}
+    <div class="fondo">
+        <div class="formContainer">
+            <form class="formularioArchivos" action="/api/users/{{user._id}}/documents" method="POST"
+                enctype="multipart/form-data">
+                <label for="file">Seleccione el tipo de archivo:</label>
+                <select name="fileType" id="fileType">
+                    <option value="profileImage">Imagen de perfil</option>
+                    <option value="productImage">Imagen de producto</option>
+                    <option value="documentFile">Documento</option>
+                </select>
+                <legend>Cargar un archivo</legend>
+                <input type="file" name="myFile">
+                <input type="submit">
+            </form>
 
-{{!-- Single File --}}
-<div class="fondo">
-<form class="formularioArchivos" action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data">
-    <label for="file">Seleccione el tipo de archivo:</label>
-    <select name="fileType" id="fileType">
-        <option value="profileImage">Imagen de perfil</option>
-        <option value="productImage">Imagen de producto</option>
-        <option value="documentFile">Documento</option>
-    </select>
-    <legend>Cargar un archivo</legend>
-    <input type="file" name="myFile">
-    <input type="submit">
-</form>
-
-{{!-- Miltiple Files --}}
-<form  class="formularioArchivos" action="/api/users/{{user._id}}/documents/multiple" method="POST" enctype="multipart/form-data">
-    <label for="file">Seleccione el tipo de archivo:</label>
-    <select name="fileType" id="fileType">
-        <option value="productImage">Imagenes de producto</option>
-        <option value="documentFile">Documentos</option>
-    </select>
-    <legend>Cargar multiples archivos</legend>
-    <input type="file" name="myFiles" multiple>
-    <input type="submit">
-</form>
-</div>
-
+            {{!-- Miltiple Files --}}
+            <form class="formularioArchivos" action="/api/users/{{user._id}}/documents/multiple" method="POST"
+                enctype="multipart/form-data">
+                <label for="file">Seleccione el tipo de archivo:</label>
+                <select name="fileType" id="fileType">
+                    <option value="productImage">Imagenes de producto</option>
+                    <option value="documentFile">Documentos</option>
+                </select>
+                <legend>Cargar multiples archivos</legend>
+                <input type="file" name="myFiles" multiple>
+                <input type="submit">
+            </form>
+        </div>
+        <footer class="footerLogin">
+            <p> Created by Brian Pagano | todos los derechos reservados</p>
+        </footer>
+    </div>
+</body>

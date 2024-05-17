@@ -15,6 +15,26 @@ router.get('/login', publicAcces , async (req, res) => {
     }
 })
 
+router.get('/admin', authorization(['admin']), async (req, res) => {
+    try {
+        const { user } = req.session
+        res.render ('admin', {user, style:'style.css'})   
+    } catch (error) {
+        req.logger.error (error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
+router.get('/rol', authorization(['admin']), async (req, res) => {
+    try {
+        const { user } = req.session
+        res.render ('rol', {user, style:'style.css'})   
+    } catch (error) {
+        req.logger.error (error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
 router.get('/signup', publicAcces , async (req, res) => {
     try {
      res.render ('signup', {style:'style.css'})   

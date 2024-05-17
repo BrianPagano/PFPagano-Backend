@@ -8,6 +8,19 @@ const EErrors = require('../handlers/errors/enum-errors')
 const authMiddleware = require('../middlewares/private-acces-middleware')
 const upload  = require('../middlewares/multer')
 const Users = require('../DAO/models/user.model')
+const SensibleDTO = require ('../DTO/sensible-user')
+const authorization = require('../middlewares/authorization-middleware')
+
+router.get('/', async (req,res,next) => {
+    try {
+        const users = await UserService.getUsers()
+        const userDTO = new SensibleDTO(users)
+        res.json({ userDTO })
+    } catch (error) {
+        // Pasar el error al middleware para su manejo
+        next(error)
+    }
+})
 
 router.get ('/user-cart', async (req, res, next) => {
     try {
@@ -53,6 +66,12 @@ router.get ('/documents', authMiddleware , async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
+
+router.get ('/fail-Register', (req, res) => {
+    req.logger.info ('fallo el registro de usuario')
+    res.status(400).json({status: 'error',  error: 'bad Request' })
+})
+
 
 router.post ('/', passport.authenticate('register', {failureRedirect: '/api/users/fail-Register'}),  async (req, res) => {
     try {
@@ -102,11 +121,6 @@ router.post('/:uid/documents/multiple', upload.array('myFiles'), async (req, res
 })
 
 
-router.get ('/fail-Register', (req, res) => {
-    req.logger.info ('fallo el registro de usuario')
-    res.status(400).json({status: 'error',  error: 'bad Request' })
-})
-
 //actualizar el user con el carrito creado
 router.put('/', async (req, res) => {
     try {
@@ -123,7 +137,7 @@ router.put('/', async (req, res) => {
 })
 
 // Ruta para cambiar el rol de usuario a premium o viceversa
-router.put('/premium/:uid', async (req, res) => {
+router.put('/premium/:uid', authorization(['admin']) , async (req, res) => {
     try {
         const { uid } = req.params
         const requiredDocuments = ['Identificacion', 'Comprobantededomicilio', 'Comprobantedeestadodecuenta']

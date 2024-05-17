@@ -1,6 +1,14 @@
 const Users = require('./models/user.model')
 
 class UserDao {
+    async getUsers() {
+        try {
+            return await Users.find({})
+        } catch (error) {
+            throw new Error('Error al obtener los usuarios de la base de datos')
+        }
+    }
+
     async getUserById(uid) {
         try {
             return await Users.findOne({ _id: uid }).exec()

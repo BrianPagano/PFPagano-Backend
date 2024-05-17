@@ -1,4 +1,4 @@
-document.querySelectorAll('.botonAgregarCarrito').forEach(function(button) {
+document.querySelectorAll('.CartBtn').forEach(function(button) {
     button.addEventListener ('click', async function() {
       let pid = this.dataset.pid
       let cid = this.dataset.cid

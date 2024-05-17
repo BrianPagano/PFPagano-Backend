@@ -28,7 +28,8 @@ router.get('/', async (req, res) => {
     // Redirige al usuario a la última página disponible
     return res.redirect(`/api/products?page=${totalPages}`)
     }
-
+    // creo un array para armar los botones de paginacion
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
      res.render ('home', { 
         user,
         products,
@@ -38,6 +39,7 @@ router.get('/', async (req, res) => {
         prevPage,
         limit,
         sort,
+        pages,
          style: 'style.css',})
     } catch (error) {
         req.logger.error (error)

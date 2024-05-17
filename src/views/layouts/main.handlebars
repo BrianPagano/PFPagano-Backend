@@ -28,15 +28,26 @@
                   {{#if user.first_name }}
                   <a class="nav-link link-light text-center animacion-menu" href='/profile'>Perfil</a>
                   {{/if}}
+                  {{#isEqual user.role 'admin'}}
+                   <a class="nav-link link-light text-center animacion-menu" href='/admin'>Admin</a>
+                  {{/isEqual}}
               </div>
-              {{#if user.first_name }}
+              {{#isEqual user.role 'user'}}
                 <a class='carrito text-center' id="cart">  
                   <div class='contenedorCarrito'>
                       <img class="carrito" src="/img/cart.svg"alt="imagen del carrito de compra"/>
                       <span class='contadorCarrito'></span>
                   </div>
                 </a>
-              {{/if}}
+              {{/isEqual}}
+              {{#isEqual user.role 'premium'}}
+                <a class='carrito text-center' id="cart">  
+                  <div class='contenedorCarrito'>
+                      <img class="carrito" src="/img/cart.svg"alt="imagen del carrito de compra"/>
+                      <span class='contadorCarrito'></span>
+                  </div>
+                </a>
+              {{/isEqual}}
             </div>
           </div>
         </nav>
