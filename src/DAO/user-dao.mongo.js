@@ -106,39 +106,58 @@ class UserDao {
         }
     }
 
-/*     async deleteUsers(users) {
+    async deleteUsers(users) {
         try {
             const usersDelete = []
+            let anyUserModified = false // Bandera para verificar si se modificó algún usuario
+    
+            // creo la variable para setear el horario y poder cambiarlo a argentina
+            const now = new Date()
+            // Ajustar la fecha y hora a la zona horaria de Argentina
+            now.setUTCHours(now.getUTCHours() - 3)
+            // Obtener la marca de tiempo actual en milisegundos
+            const nowTimestamp = now.getTime()
+            //creo varible de 30 min atras
+            const thirtyMinutesAgo = nowTimestamp - (30 * 60 * 1000)
             // recorro los usuarios y reviso cual tuvo inactividad
             users.forEach(user => {
-                if (user.user.last_connection > xxx ) {
-                    usersDelete.push(user)
+                if (user.role !== 'admin' && user.last_connection) { // Verificar que no sea el usuario admin
+                    const lastConnectionTimestamp = user.last_connection.getTime()
+                    if (lastConnectionTimestamp < thirtyMinutesAgo) {
+                        usersDelete.push(user)
+                    }
                 }
             })
+    
             // Itera sobre cada usuario y le cambio el estado a false
             for (const userDelete of usersDelete) {
                 // Encuentra el usuario por su ID
-                const uid = userDelete.user._id
+                const uid = userDelete._id
                 const foundUser = await Users.findById(uid)
     
                 if (foundUser) {
-                // Actualiza el status para eliminar usuario
-                foundUser.status = false
+                    // Actualiza el status para eliminar usuario
+                    foundUser.status = false
     
-                // Guarda los cambios en la base de datos
-                await foundUser.save()
-                console.log(`Usuario ${foundUser.email} borrado correctamente`)
+                    // Guarda los cambios en la base de datos
+                    await foundUser.save()
+                    console.log(`Usuario ${foundUser.email} borrado correctamente`)
+                    anyUserModified = true // Cambia la bandera indicando que al menos un usuario fue modificado
                 }
             }
-            console.log('Todos usuarios inactivos fueron eliminados')
+            if (anyUserModified) {
+                return { success: true }
+            } else {
+                return { success: false, message: "No se realizaron modificaciones" }
+            }
         } catch (error) {
             console.error('Error al eliminar los usuarios:', error)
+            return { success: false, message: error.message }
         }
-      } */
+    }
     
-    
-    
-}
+}  
+
 
 
 module.exports = UserDao

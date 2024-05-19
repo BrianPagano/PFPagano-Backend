@@ -44,7 +44,7 @@ const initializePassport = () => {
             return done (null, false)            
         }
         if (user.status === false) {
-            console.error ('usuario Desactivado por inactividad')
+            console.error ('usuario desactivado por inactividad')
             return done (null, false)
         }
         const uid = user._id

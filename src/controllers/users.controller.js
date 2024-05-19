@@ -87,12 +87,12 @@ router.post("/:uid/documents", upload.single("myFile"), async (req, res) => {
     const file = req.file
     const { uid } = req.params
     if (!file) {
-      res.status(500).send("Error al subir el documento")
+      res.status(500).json("Error al subir el documento")
     } else {
       const result = await UserService.uploadImage(uid, file)
-      if (result) res.status(200).send("Documento Cargado con Exito")
+      if (result) res.status(200).json("Documento Cargado con Exito")
         else {
-            res.status(500).send("Error al procesar la carga del documento.")
+            res.status(500).json("Error al procesar la carga del documento.")
           }
     }
   } catch (error) {
@@ -106,12 +106,12 @@ router.post('/:uid/documents/multiple', upload.array('myFiles'), async (req, res
         const files = req.files
         const { uid } = req.params
         if (!files) {
-          res.status(500).send("Error al subir los documentos")
+          res.status(500).json("Error al subir los documentos")
         } else {
           const result = await UserService.uploadImages(uid, files)
-          if (result) res.status(200).send("Documentos Cargados con Exito")
+          if (result) res.status(200).json("Documentos Cargados con Exito")
             else {
-                res.status(500).send("Error al procesar la carga del documento.")
+                res.status(500).json("Error al procesar la carga del documento.")
               }
         }
     } catch (error) {
@@ -171,8 +171,14 @@ router.delete('/', async (req, res) => {
     try {
     const users = await UserService.getUsers()
     // Limpiar a todos los usuarios que no hayan tenido conexión en los últimos 2 días
-    const usuariosEliminados = await UserService.deleteUsers(users)
-    res.status(200).json({ status: 'success', message: 'Usuarios inactivos eliminados correctamente', usuariosEliminados });
+    const result = await UserService.deleteUsers(users)
+    console.log (result)
+    if (result) {
+        res.status(200).json({ status: 'success', message: 'Usuarios inactivos eliminados correctamente' })
+        }
+        else {
+            res.status(400).json({ status: 'Error', message: 'No hay usuarios inactivos' })
+        }
     } catch (error) {
         req.logger.error ('Error al borrar usuarios:', error)
         res.status(500).json({ error: 'Internal Server Error' })
