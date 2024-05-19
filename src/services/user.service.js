@@ -72,6 +72,16 @@ async function uploadImages (uid, file) {
     }
 }
 
+async function deleteUsers (users) {
+    try {
+        const usersDelete = await User.deleteUsers(users)
+        return usersDelete
+    } catch (error) {
+        console.error (error)
+    }
+}
+
+
 module.exports = {
     getUsers,
     getUserCart,
@@ -81,4 +91,5 @@ module.exports = {
     lastConnection,
     uploadImage,
     uploadImages,
+    deleteUsers,
 }

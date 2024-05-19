@@ -105,6 +105,37 @@ class UserDao {
             throw error
         }
     }
+
+/*     async deleteUsers(users) {
+        try {
+            const usersDelete = []
+            // recorro los usuarios y reviso cual tuvo inactividad
+            users.forEach(user => {
+                if (user.user.last_connection > xxx ) {
+                    usersDelete.push(user)
+                }
+            })
+            // Itera sobre cada usuario y le cambio el estado a false
+            for (const userDelete of usersDelete) {
+                // Encuentra el usuario por su ID
+                const uid = userDelete.user._id
+                const foundUser = await Users.findById(uid)
+    
+                if (foundUser) {
+                // Actualiza el status para eliminar usuario
+                foundUser.status = false
+    
+                // Guarda los cambios en la base de datos
+                await foundUser.save()
+                console.log(`Usuario ${foundUser.email} borrado correctamente`)
+                }
+            }
+            console.log('Todos usuarios inactivos fueron eliminados')
+        } catch (error) {
+            console.error('Error al eliminar los usuarios:', error)
+        }
+      } */
+    
     
     
 }

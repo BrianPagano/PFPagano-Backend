@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
         reference: String,
     }],
     last_connection: Date,
+    status: Boolean,
 })
 
 const Users = mongoose.model (userColletion, userSchema)

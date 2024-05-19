@@ -43,6 +43,10 @@ const initializePassport = () => {
             console.error ('Usuario o contraseña incorrecta')
             return done (null, false)            
         }
+        if (user.status === false) {
+            console.error ('usuario Desactivado por inactividad')
+            return done (null, false)
+        }
         const uid = user._id
         await UserService.lastConnection(uid)
         return done (null, user)
@@ -66,6 +70,7 @@ const initializePassport = () => {
                     email: email,
                     githubId: id,
                     githubUsername: login,
+                    status: true,
                 }
     
                 user = await Users.create(newUserInfo)

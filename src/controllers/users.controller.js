@@ -166,5 +166,18 @@ router.put('/premium/:uid', authorization(['admin']) , async (req, res) => {
     }
 })
 
+//borra todos los usuarios con ultima conexion mayor a 2 dias.
+router.delete('/', async (req, res) => {
+    try {
+    const users = await UserService.getUsers()
+    // Limpiar a todos los usuarios que no hayan tenido conexión en los últimos 2 días
+    const usuariosEliminados = await UserService.deleteUsers(users)
+    res.status(200).json({ status: 'success', message: 'Usuarios inactivos eliminados correctamente', usuariosEliminados });
+    } catch (error) {
+        req.logger.error ('Error al borrar usuarios:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
 
 module.exports = router

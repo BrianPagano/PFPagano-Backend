@@ -7,6 +7,7 @@ class NewUserDTO {
         this.age = NewUser.age
         this.email = NewUser.email
         this.password =  createHash (password)
+        this.status = true
     }
 }
 
