@@ -76,6 +76,7 @@ const initializePassport = () => {
                 user = await Users.create(newUserInfo)
             }
     
+            await UserService.lastConnection(user._id)
             console.log ('Usuario actualizado con éxito:', user)
             done(null, user)
         } catch (error) {

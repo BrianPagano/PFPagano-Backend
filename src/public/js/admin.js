@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(responseData => {
-                console.log (responseData)
                 if (responseData.status === 'success') { // Verifica si devuelve success desde el back
                     Swal.fire({
                         icon: "success",
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "No hay usuarios inactivos",
+                        text: responseData.message,
                       })
                 }
             })

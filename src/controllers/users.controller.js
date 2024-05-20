@@ -172,8 +172,7 @@ router.delete('/', async (req, res) => {
     const users = await UserService.getUsers()
     // Limpiar a todos los usuarios que no hayan tenido conexión en los últimos 2 días
     const result = await UserService.deleteUsers(users)
-    console.log (result)
-    if (result) {
+    if (result.status === 'success') {
         res.status(200).json({ status: 'success', message: 'Usuarios inactivos eliminados correctamente' })
         }
         else {

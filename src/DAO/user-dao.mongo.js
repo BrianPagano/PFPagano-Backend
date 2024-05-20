@@ -1,4 +1,6 @@
+const transport = require('../utils/nodemailer.util')
 const Users = require('./models/user.model')
+const { userEmail } = require('../configs/app.config')
 
 class UserDao {
     async getUsers() {
@@ -108,9 +110,7 @@ class UserDao {
 
     async deleteUsers(users) {
         try {
-            const usersDelete = []
-            let anyUserModified = false // Bandera para verificar si se modificó algún usuario
-    
+            const usersDelete = []    
             // creo la variable para setear el horario y poder cambiarlo a argentina
             const now = new Date()
             // Ajustar la fecha y hora a la zona horaria de Argentina
@@ -118,46 +118,48 @@ class UserDao {
             // Obtener la marca de tiempo actual en milisegundos
             const nowTimestamp = now.getTime()
             //creo varible de 30 min atras
-            const thirtyMinutesAgo = nowTimestamp - (30 * 60 * 1000)
-            // recorro los usuarios y reviso cual tuvo inactividad
+            const twoDaysAgo = nowTimestamp - (2 * 24 * 60 * 60 * 1000)
+            // recorro los usuarios y reviso cual tuvo inactividad y lo pusheo al array
             users.forEach(user => {
-                if (user.role !== 'admin' && user.last_connection) { // Verificar que no sea el usuario admin
+                if (user.role !== 'admin' && user.status !==false) { // Verificar que no sea el usuario admin
                     const lastConnectionTimestamp = user.last_connection.getTime()
-                    if (lastConnectionTimestamp < thirtyMinutesAgo) {
+                    if (lastConnectionTimestamp < twoDaysAgo) {
                         usersDelete.push(user)
                     }
                 }
             })
-    
-            // Itera sobre cada usuario y le cambio el estado a false
-            for (const userDelete of usersDelete) {
-                // Encuentra el usuario por su ID
-                const uid = userDelete._id
-                const foundUser = await Users.findById(uid)
-    
-                if (foundUser) {
-                    // Actualiza el status para eliminar usuario
-                    foundUser.status = false
-    
-                    // Guarda los cambios en la base de datos
-                    await foundUser.save()
-                    console.log(`Usuario ${foundUser.email} borrado correctamente`)
-                    anyUserModified = true // Cambia la bandera indicando que al menos un usuario fue modificado
+            if (usersDelete.length > 0) {
+                // Itera sobre cada usuario y le cambio el estado a false para eliminarlo
+                for (const userDelete of usersDelete) {
+                    // Encuentra el usuario por su ID
+                    const uid = userDelete._id
+                    const foundUser = await Users.findById(uid)
+                    if (foundUser) {   
+                        // Actualiza el status para eliminar usuario
+                        foundUser.status = false     
+                        // Guarda los cambios en la base de datos
+                        await foundUser.save()
+                        console.log(`Usuario ${foundUser.email} borrado correctamente`)
+                        transport.sendMail({
+                            from: userEmail,
+                            to: foundUser.email,
+                            subject: 'Usuario deshabilitado por inactividad',
+                            html: `
+                                <h1>Hola ${foundUser.first_name}</h1>
+                                <p style="margin-bottom: 20px;">Se ha desactivado tu usuario por inactividad.</p>
+                            `,
+                        })
+                    }
                 }
-            }
-            if (anyUserModified) {
-                return { success: true }
+                return { status: 'success'}
             } else {
-                return { success: false, message: "No se realizaron modificaciones" }
+                return { status: 'error'}
             }
         } catch (error) {
             console.error('Error al eliminar los usuarios:', error)
-            return { success: false, message: error.message }
+            return { status: 'error', message: error.message }
         }
     }
-    
 }  
-
-
 
 module.exports = UserDao
