@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     return res.redirect(`/api/products?page=${totalPages}`)
     }
     // creo un array para armar los botones de paginacion
-    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
      res.render ('home', { 
         user,
         products,

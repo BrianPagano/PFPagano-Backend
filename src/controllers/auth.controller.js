@@ -61,21 +61,21 @@ router.get('/logout', async (req, res, next) => {
 
 router.post('/forgotPassword', async (req, res, next) => {
     try {
-        const token = req.body.token; // Obtengo el token del cuerpo de la solicitud (lo mande por front)
-        const decodedToken = jwt.verify(token, jwtSecret); // Decodificar el token
-        const email = decodedToken.email; // Obtengo el correo electrónico del token decodificado
+        const token = req.body.token // Obtengo el token del cuerpo de la solicitud (lo mande por front)
+        const decodedToken = jwt.verify(token, jwtSecret) // Decodificar el token
+        const email = decodedToken.email // Obtengo el correo electrónico del token decodificado
 
-        const { password } = req.body;
-        const passwordEncrypted = createHash(password);
+        const { password } = req.body
+        const passwordEncrypted = createHash(password)
 
         const user = await Users.findOne({ email }) //obtengo el objeto user de la base de datos con el email
         if (useValidPassword (user, password)) {
-         return res.status(400).json({ error: 'Invalid password', message: 'New password must be different from the current password' });       
+         return res.status(400).json({ error: 'Invalid password', message: 'New password must be different from the current password' })       
         }
         // Actualizar la contraseña del usuario
-        await Users.updateOne({ email }, { password: passwordEncrypted });
+        await Users.updateOne({ email }, { password: passwordEncrypted })
 
-        res.status(200).json({ status: 'Success', message: 'Password Updated' });
+        res.status(200).json({ status: 'Success', message: 'Password Updated' })
     } catch (error) {
         next(error)
     }

@@ -19,9 +19,9 @@ function submitForm() {
     .then(response => {
         if (!response.ok) {
             // Si la respuesta no es exitosa, lanzar un error
-            throw new Error('Error al registrar usuario');
+            throw new Error('Error al registrar usuario')
         }
-        return response.json();
+        return response.json()
     })
     .then(userData => {
         // creo CID y lo asigno al usuario
@@ -30,7 +30,7 @@ function submitForm() {
         })
         .then(response => response.json())
         .then(data => {
-            const cid = data.cid;
+            const cid = data.cid
             // Realizar la solicitud Fetch para actualizar el usuario y asignarle el ID del carrito
             fetch(`/api/users/`, {
                 method: 'PUT',
@@ -43,7 +43,7 @@ function submitForm() {
             .then(updatedUser => {
                 console.log('Usuario actualizado con éxito:', updatedUser)
                 // ahora que actualice el id, Redirigir a la página de inicio de sesión
-                window.location.href = '/login';
+                window.location.href = '/login'
             })
             .catch(error => {
                 console.error('Error al actualizar el usuario:', error)
@@ -55,12 +55,12 @@ function submitForm() {
     })
     .catch(error => {
         // Capturar y manejar el error
-        console.error('Error:', error);
+        console.error('Error:', error)
         // Mostrar un mensaje de alerta al usuario
         Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Error al crear el usuario",
-          });
-    });
+          })
+    })
 }

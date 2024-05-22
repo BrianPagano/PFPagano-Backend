@@ -1,6 +1,6 @@
 const express = require('express')
 const router = require('./router/router')
-const { port } = require('./configs/app.config')
+const { port, sessionSecret } = require('./configs/app.config')
 const { Server } = require("socket.io")
 const handlebars = require('express-handlebars')
 const mongoConnect = require('./db')
@@ -41,7 +41,7 @@ app.use(express.urlencoded ({extended : true}))
 app.use(express.static(process.cwd() + '/src/public'))
 
 app.use(session ({
-  secret: 'secretCoder',
+  secret: sessionSecret ,
   resave: true,
   saveUninitialized: true,
 }))
