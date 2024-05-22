@@ -8,6 +8,8 @@ const TYPES_ERROR = require('../handlers/errors/types.errors.js')
 const EErrors = require('../handlers/errors/enum-errors.js')
 const CustomError = require('../handlers/errors/Custom-Error.js')
 const generateProductErrorInfo = require('../handlers/errors/generate-product-error-info.js')
+const transport = require('../utils/nodemailer.util')
+const { userEmail } = require('../configs/app.config')
 
 router.get('/', async (req, res) => {
     try {
@@ -150,10 +152,22 @@ router.delete ('/:pid', authorization(['admin', 'premium']), async (req, res) =>
                 return res.status(401).json({status: 'failure', error: 'No puede borrar productos de otro usuario.'})
             }
         } else {
+            const productFilter =  await ProductsService.getProductByID(pid)
             const result = await ProductsService.deleteProduct(pid)
             if (result === false) {
                 return res.status(404).json({ error: 'El producto con el id buscado no existe.'})
             } else {
+                if (productFilter.owner !== 'admin') {
+                    transport.sendMail({
+                        from: userEmail,
+                        to: productFilter.owner,
+                        subject: `Producto cod ${productFilter.title} eliminado`,
+                        html: `
+                            <h1>Producto Eliminado</h1>
+                            <p>Se realizo la eliminacion del producto ${productFilter.title} codigo ${productFilter.code}</p>        
+                        `,
+                    })
+                }
                 res.json({ status: 'Success', message: 'Producto borrado correctamente por admin' })
             }
         }
