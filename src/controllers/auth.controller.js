@@ -1,14 +1,10 @@
 const { Router } = require('express')
-const Users = require('../DAO/models/user.model')
-const { createHash, useValidPassword } = require('../utils/cryp-password.util')
 const passport = require('passport')
 const router = Router()
 const SensibleDTO = require ('../DTO/sensible-user')
-const transport = require('../utils/nodemailer.util')
-const { userEmail } = require('../configs/app.config')
-const { generateToken } = require('../utils/jwt.util')
 const jwt = require('jsonwebtoken')
 const { jwtSecret } = require('../configs/app.config')
+const UserService = require ('../services/user.service')
 
 
 router.post ('/', passport.authenticate('login', {failureRedirect: '/auth/fail-login'}) , async (req, res, next) => {
@@ -66,14 +62,9 @@ router.post('/forgotPassword', async (req, res, next) => {
         const email = decodedToken.email // Obtengo el correo electrónico del token decodificado
 
         const { password } = req.body
-        const passwordEncrypted = createHash(password)
-
-        const user = await Users.findOne({ email }) //obtengo el objeto user de la base de datos con el email
-        if (useValidPassword (user, password)) {
-         return res.status(400).json({ error: 'Invalid password', message: 'New password must be different from the current password' })       
-        }
-        // Actualizar la contraseña del usuario
-        await Users.updateOne({ email }, { password: passwordEncrypted })
+ 
+        // Llamo al servicio para actualizar la contraseña
+        await UserService.updatePassword(email, password)
 
         res.status(200).json({ status: 'Success', message: 'Password Updated' })
     } catch (error) {
@@ -83,35 +74,11 @@ router.post('/forgotPassword', async (req, res, next) => {
 
 router.post('/recoveryKey', async (req, res, next) => {
     try {
-        const {email} = req.body
-        const userExist = await Users.findOne ({email})
+        const { email } = req.body
+        const result = await UserService.sendRecoveryEmail(email)
       
-        if (userExist) {
-            const TokenInfoUser = {
-                email: userExist.email,
-            }
-
-            const token =  generateToken(TokenInfoUser)
-
-            const recoveryLink = `http://localhost:8080/forgotPassword?token=${token}`
-
-            transport.sendMail({
-                from: userEmail,
-                to: userExist.email,
-                subject: 'Restablece tu Contraseña en VinoMania',
-                html: `
-                    <h1>Hola ${userExist.first_name}</h1>
-                    <p style="margin-bottom: 20px;">Has solicitado restablecer tu contraseña en Vinomania.</p>
-                    <p>Por favor, presiona sobre el siguiente botón para cambiar tu contraseña. Este enlace solo será válido durante 1 hora.</p>
-                    <a id="recoveryLink" href="${recoveryLink}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; display: inline-block;">Restablecer Contraseña</a>                
-                `,
-            })
-            // Si el usuario existe, significa que el correo electrónico está registrado
-            res.status(200).json({ status: 'Success', message: 'El correo se encuentra registrado' })
-        } else {
-            // Si el usuario no existe, significa que el correo electrónico no está registrado
-            res.status(404).json({ status: 'Error', message: 'El correo no está registrado' })
-        }
+        // Envía una respuesta basada en el resultado del servicio
+        res.status(result.status === 'Success' ? 200 : 404).json(result)
     } catch (error) {
         next(error)
     }

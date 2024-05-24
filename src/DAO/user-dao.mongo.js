@@ -36,6 +36,24 @@ class UserDao {
         }
     }
 
+    async findByEmail(email) {
+        try {
+            const userByEmail = await Users.findOne({ email })
+            return userByEmail
+        } catch (error) {
+            throw new Error('Error buscar el usuario por email')
+        }  
+    }
+
+    async updatePassword(email, newPassword) {
+        try {
+            const result = await Users.updateOne({ email }, { password: newPassword })
+            return result
+        } catch (error) {
+            throw new Error('Error cambiar password')
+        }  
+    }
+
     async toggleUserRole(uid) {
         try {
             const user = await Users.findById(uid)

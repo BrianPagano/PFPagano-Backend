@@ -875,4 +875,34 @@ margin: 50px 100px 0px 100px;
 }
 
 
+/*estilo orden de compra*/
+
+
+.order-success {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-success h2 {
+  color: #8c00ff;
+}
+
+.order-success h4 {
+  color: #343a40;
+}
+
+.order-success .order-number {
+  font-weight: bold;
+}
+
+.order-success .total {
+  font-weight: bold;
+  color: #7b54c5;
+}
+
+
 
