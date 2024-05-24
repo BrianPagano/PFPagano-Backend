@@ -167,7 +167,7 @@ router.put('/premium/:uid', authorization(['admin']) , async (req, res) => {
 })
 
 //borra todos los usuarios con ultima conexion mayor a 2 dias.
-router.delete('/', async (req, res) => {
+router.delete('/', authorization(['admin']) , async (req, res) => {
     try {
     const users = await UserService.getUsers()
     // Limpiar a todos los usuarios que no hayan tenido conexión en los últimos 2 días

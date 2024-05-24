@@ -74,10 +74,11 @@ const initializePassport = () => {
                 }
     
                 user = await Users.create(newUserInfo)
+            } else if (user.status === false) {
+                console.error('Usuario desactivado por inactividad')
+                return done(null, false)
             }
-    
             await UserService.lastConnection(user._id)
-            console.log ('Usuario actualizado con éxito:', user)
             done(null, user)
         } catch (error) {
             console.error ('error', error)
