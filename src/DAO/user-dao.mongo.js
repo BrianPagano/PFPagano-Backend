@@ -18,6 +18,14 @@ class UserDao {
             throw new Error('Error al obtener el usuario de la base de datos')
         }
     }
+
+    async findByIdDocuments (uid){
+        try {
+            return await Users.findById(uid).populate('documents')
+        } catch (error) {
+            throw new Error('Error al obtener el usuario de la base de datos')
+        }
+    }
   
     async updateUserCart(uid, cid) {
         try {

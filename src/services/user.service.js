@@ -24,6 +24,15 @@ async function getUserCart(uid) {
     }
 }
 
+async function findByIdDocuments(uid) {
+    try {
+         const user = await User.findByIdDocuments(uid)
+         return user
+    } catch (error) {
+        console.error (error)
+    }
+}
+
 async function updateUserCart(uid, cid) {
     try {
         await User.updateUserCart(uid, cid)
@@ -146,6 +155,7 @@ async function sendRecoveryEmail(email) {
 module.exports = {
     getUsers,
     getUserCart,
+    findByIdDocuments,
     updateUserCart,
     createUser,
     toggleUserRole,

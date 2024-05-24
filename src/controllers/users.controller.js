@@ -7,7 +7,6 @@ const TYPES_ERROR = require('../handlers/errors/types.errors')
 const EErrors = require('../handlers/errors/enum-errors')
 const authMiddleware = require('../middlewares/private-acces-middleware')
 const upload  = require('../middlewares/multer')
-const Users = require('../DAO/models/user.model')
 const SensibleDTO = require ('../DTO/sensible-user')
 const authorization = require('../middlewares/authorization-middleware')
 
@@ -142,7 +141,7 @@ router.put('/premium/:uid', authorization(['admin']) , async (req, res) => {
         const { uid } = req.params
         const requiredDocuments = ['Identificacion', 'Comprobantededomicilio', 'Comprobantedeestadodecuenta']
         // nos traemos los documentos cargados en el usuario y los formateamos
-        const user = await Users.findById(uid).populate('documents')
+        const user = await UserService.findByIdDocuments(uid)
         const userDocuments = user.documents.map(doc => {
             // Utilizamos una expresión regular para eliminar el timestamp y la extensión del nombre del documento
             const fileNameWithoutExtension = doc.name.replace(/\d+-/, '').replace(/\..+$/, '')
