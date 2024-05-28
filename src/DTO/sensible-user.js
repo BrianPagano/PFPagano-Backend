@@ -13,7 +13,6 @@ class UserDTO {
             last_name: user.last_name,
             email: user.email,
             role: user.role,
-            status: user.status,
         }
     }
 }

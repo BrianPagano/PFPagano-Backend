@@ -139,18 +139,19 @@ VinoMania es una plataforma de comercio electrónico especializada en la venta d
 - **GET /api/users/user-cart**: Obtener el carrito actual del usuario.
 - **GET /api/users/documents**: Mostrar la página para cargar documentos (solo disponible para usuarios logueados)
 - **GET /api/users/fail-Register**: Ruta para el manejo de errores durante el registro.
+- **GET /api/users/gestionarUsers**: Ruta para el administrador para la gestion de usuarios.
 - **POST /api/users**: Registrar un nuevo usuario.
 - **POST /api/users/:uid/documents**: Subir un documento para un usuario específico.
 - **POST /api/users/:uid/documents/multiple**: Subir múltiples documentos para un usuario específico.
 - **PUT /api/users**: Actualizar el usuario con el carrito creado.
 - **PUT /api/users/premium/:uid**: Cambiar el rol de usuario a premium o viceversa (solo disponible para admin).
 - **DELETE /api/users**: Borrar todos los usuarios inactivos (solo disponible para admin).
+- **DELETE /api/users/:uid**: Borrar un usuario especifico (solo disponible para admin).
 
 ### Vistas
 
 - **GET /login**: Mostrar la página de inicio de sesión.
 - **GET /admin**: Mostrar la página de administración (solo para admin).
-- **GET /rol**: Mostrar la página de cambio de rol (solo para admin).
 - **GET /signup**: Mostrar la página de registro.
 - **GET /profile**: Mostrar la página de perfil del usuario.
 - **GET /recoveryKey**: Mostrar la página para recuperar clave.

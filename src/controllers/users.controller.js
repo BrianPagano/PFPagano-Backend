@@ -71,6 +71,19 @@ router.get ('/fail-Register', (req, res) => {
     res.status(400).json({status: 'error',  error: 'bad Request' })
 })
 
+router.get ('/gestionarUsers', authorization(['admin']) , async (req, res) => {
+    try {
+        const user = req.user
+        const users = await UserService.getUsers()
+        res.render ('gestionarUsers', { 
+            user,
+            users,
+            style: 'style.css',})
+     } catch (error) {
+        req.logger.error (error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
 
 router.post ('/', passport.authenticate('register', {failureRedirect: '/api/users/fail-Register'}),  async (req, res) => {
     try {
@@ -161,7 +174,24 @@ router.put('/premium/:uid', authorization(['admin']) , async (req, res) => {
         }
     } catch (error) {
         req.logger.error ('Error al cambiar el role del usuario:', error)
-        res.status(500).json({ error: 'Error al cambiar el rol del usuario.' })
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
+// Ruta para cambiar el rol de usuario a premium o viceversa
+router.delete('/:uid', authorization(['admin']) , async (req, res) => {
+    try {
+        const { uid } = req.params
+        const result = await UserService.deleteUser(uid)
+        if (result.status === 'success') {
+                res.status(200).json({ status: 'success', message: 'Usuario eliminado correctamente' })
+            }
+            else {
+                res.status(400).json({ status: 'Error', message: 'error al eliminar el usuario' })
+            }
+    } catch (error) {
+        req.logger.error ('Error al eliminar usuario:', error)
+        res.status(500).json({ error: 'Internal Server Error'})
     }
 })
 

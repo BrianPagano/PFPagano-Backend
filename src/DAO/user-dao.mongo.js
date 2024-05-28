@@ -186,6 +186,33 @@ class UserDao {
             return { status: 'error', message: error.message }
         }
     }
+
+    async deleteUser(uid) {
+        try {
+            const foundUser = await Users.findById(uid)
+            if (foundUser.role !== 'admin' && foundUser.status !==false) {   
+                // Actualiza el status para eliminar usuario
+                foundUser.status = false     
+                // Guarda los cambios en la base de datos
+                await foundUser.save()
+                console.log(`Usuario ${foundUser.email} borrado correctamente`)
+                transport.sendMail({
+                    from: userEmail,
+                    to: foundUser.email,
+                    subject: 'Usuario deshabilitado',
+                    html: `
+                        <h1>Hola ${foundUser.first_name}</h1>
+                        <p style="margin-bottom: 20px;">Tu usuario fue eliminado por el administrador.</p>
+                    `,
+                })
+                return { status: 'success'}
+            } else {
+                return { status: 'error'}
+            }
+        } catch (error) {
+            console.error (error)       
+         }
+    }
 }  
 
 module.exports = UserDao

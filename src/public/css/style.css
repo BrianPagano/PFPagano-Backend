@@ -848,24 +848,47 @@ margin: 50px 100px 0px 100px;
   gap: 20vh;
 }
 
-/*vista de cambiar Rol*/
+/*Estilo gestion de usuarios */
 
-.rolContainer {
-  font-size: 17px;
-  padding-top: 20vh;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.alineadoTitGestionUsuarios {
+  display: grid;
+  margin: 20px 20px 0px 20px;
+  grid-template-columns: repeat(7, 1fr);
   align-items: center;
+  justify-items: center;
+  font-size: 200px;
 }
 
-.cssbuttonsRol {
-  font-size: 15px;
+.containerUsuarios {
+  display: grid;
+  margin: 0px 20px 10px 20px;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: center;
+  text-align: center;
+  justify-items: center;
+  font-weight: 600;
 }
 
-.form2 {
+.parrafoAdmin {
+  margin: 0px;
+  font-size: 0.95vw;
+}   
+
+.tituloGestionUsers {
+  margin: 0px;
+  font-size: 1.8vw;
+  text-align: center;
+  font-weight: 700;
+}
+
+.tamañoLinea2 {
+  margin: 10px 20px 10px 20px;
+}
+
+.containerTableUsers {
   background-color: white;
-  padding: 3.125em;
+  padding: 0px 20px 20px 20px;
+  margin: 40px 12px 0px 12px;
   height: auto;
   border-radius: 20px;
   display: flex;
@@ -874,9 +897,13 @@ margin: 50px 100px 0px 100px;
   box-shadow: 5px 5px 15px -1px rgba(0, 0, 0, 0.952);
 }
 
+.iconoUser , .iconoBasuraUser {
+  border: 0px;
+  background-color: transparent;
+}
+
 
 /*estilo orden de compra*/
-
 
 .order-success {
   text-align: center;

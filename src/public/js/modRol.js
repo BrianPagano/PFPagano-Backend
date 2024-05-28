@@ -1,7 +1,6 @@
-function submitForm() {
-    // Recopila los datos del input
-    const uid = document.getElementById('idUser').value
-
+document.querySelectorAll('.iconoUser').forEach(function(button) {
+    button.addEventListener('click', function() {
+    const uid = this.dataset.uid
     // Realiza una solicitud PUT utilizando fetch y envía los datos en formato JSON
     fetch(`/api/users/premium/${uid}`, {
         method: 'PUT',
@@ -45,4 +44,34 @@ function submitForm() {
             })
         }
     })
-}    
+
+    })
+})
+
+document.querySelectorAll('.iconoBasuraUser').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const uid = this.dataset.uid
+
+        // Realizar una solicitud Fetch para cancelar la compra
+        fetch(`/api/users/${uid}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.status === 'success') { // Verifica si devuelve success desde el back
+                Swal.fire({
+                    icon: "success",
+                    title: "Usuario eliminados correctamente",
+                  })
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: responseData.message,
+                  })
+            }
+        })
+        .catch(error => console.log(error))
+})
+})
+

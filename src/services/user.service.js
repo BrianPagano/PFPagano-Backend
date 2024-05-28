@@ -94,6 +94,15 @@ async function deleteUsers (users) {
     }
 }
 
+async function deleteUser (uid) {
+    try {
+        const result = await User.deleteUser(uid)
+        return result
+    } catch (error) {
+        console.error (error)
+    }
+}
+
 async function updatePassword(email, newPassword) {
     try {
         const user = await User.findByEmail(email)
@@ -163,6 +172,7 @@ module.exports = {
     uploadImage,
     uploadImages,
     deleteUsers,
+    deleteUser,
     updatePassword,
     sendRecoveryEmail,
 }
