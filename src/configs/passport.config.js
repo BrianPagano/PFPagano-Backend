@@ -58,7 +58,7 @@ const initializePassport = () => {
     passport.use('github', new GithubStrategy({
         clientID: ghClientId,
         clientSecret: ghClientSecret,
-        callbackURL: "http://localhost:8080/api/auth/githubcallback"
+        callbackURL: "https://vinomania.up.railway.app/api/auth/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const { id, login, name, email } = profile._json

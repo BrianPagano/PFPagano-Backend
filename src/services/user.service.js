@@ -132,7 +132,7 @@ async function sendRecoveryEmail(email) {
 
             const token =  generateToken(TokenInfoUser)
 
-            const recoveryLink = `http://localhost:8080/forgotPassword?token=${token}`
+            const recoveryLink = `https://vinomania.up.railway.app/forgotPassword?token=${token}`
 
             transport.sendMail({
                 from: userEmail,
