@@ -853,7 +853,7 @@ margin: 50px 100px 0px 100px;
 .alineadoTitGestionUsuarios {
   display: grid;
   margin: 20px 20px 0px 20px;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
   justify-items: center;
   font-size: 200px;
@@ -862,17 +862,22 @@ margin: 50px 100px 0px 100px;
 .containerUsuarios {
   display: grid;
   margin: 0px 20px 10px 20px;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
   justify-items: center;
   font-weight: 600;
+  gap: 10px; 
 }
 
 .parrafoAdmin {
   margin: 0px;
   font-size: 0.95vw;
-}   
+  word-wrap: break-word; /* Asegúrate de que las palabras largas se dividan */
+  overflow: hidden; /* Oculta el desbordamiento */
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es muy largo */
+  white-space: nowrap; /* Mantén el texto en una sola línea */
+}
 
 .tituloGestionUsers {
   margin: 0px;
