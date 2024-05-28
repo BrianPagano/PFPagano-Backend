@@ -1,10 +1,11 @@
 {
-  "name": "desafiocoder",
+  "name": "vinomania",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/supertest.test.js",
+    "start": "set NODE_ENV=prod && node src/server.js",
     "start:dev": "set NODE_ENV=dev && nodemon src/server.js",
     "start:prod": "set NODE_ENV=prod && nodemon src/server.js"
   },

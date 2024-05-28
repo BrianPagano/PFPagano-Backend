@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/mockingproducts', async (req, res) => {
+router.get('/mockingproducts', authorization(['admin']), async (req, res) => {
     try {
         const products = generateProducts()
         res.render ('home', { 
